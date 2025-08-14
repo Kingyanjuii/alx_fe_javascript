@@ -1,42 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dynamic Quote Generator</title>
-  <style>
-    /* Optional: simple, readable defaults */
-    :root { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-    body { margin: 2rem; line-height: 1.5; }
-    h1 { margin-bottom: 1rem; }
-    .row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-bottom: 1rem; }
-    #quoteDisplay { padding: 1rem; border: 1px solid #ddd; border-radius: .5rem; min-height: 3.5rem; }
-    blockquote { margin: 0; font-size: 1.2rem; }
-    cite { display: inline-block; margin-top: .5rem; opacity: .7; font-style: normal; }
-    label { font-weight: 600; }
-    input, select, button { padding: .5rem .75rem; border-radius: .5rem; border: 1px solid #ccc; }
-    button { cursor: pointer; }
-    .help { font-size: .875rem; opacity: .7; }
-    .error { color: #b00020; font-size: .9rem; }
-    .visually-hidden { position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Dynamic Quote Generator</h1>
+    <div class="quote-container">
+        <h1>Random Quote Generator</h1>
+        <p id="quoteDisplay"></p>
+        <p id="quoteCategory"></p>
+        <button id="newQuoteBtn">Show New Quote</button>
+    </div>
 
-  <!-- Container for dynamic controls (category filter + add-quote form) -->
-  <div id="controls" class="row" aria-label="Controls"></div>
+    <div class="add-quote-container">
+        <h2>Add a New Quote</h2>
+        <input type="text" id="quoteText" placeholder="Enter quote text">
+        <input type="text" id="quoteCategoryInput" placeholder="Enter category">
+        <button id="addQuoteBtn">Add Quote</button>
+    </div>
 
-  <!-- Required display + button from the prompt -->
-  <div id="quoteDisplay" role="region" aria-live="polite" aria-label="Quote display"></div>
-  <div class="row">
-    <button id="newQuote" type="button">Show New Quote</button>
-  </div>
-
-  <noscript>
-    JavaScript is required to run this app.
-  </noscript>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
