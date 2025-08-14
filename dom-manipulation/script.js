@@ -52,7 +52,6 @@ function populateCategories() {
     categoryFilter.appendChild(option);
   });
 
-  // Restore last selected category
   const lastCategory = localStorage.getItem("lastCategoryFilter") || "all";
   categoryFilter.value = lastCategory;
   showRandomQuote();
@@ -62,6 +61,29 @@ function populateCategories() {
 function filterQuotes() {
   localStorage.setItem("lastCategoryFilter", categoryFilter.value);
   showRandomQuote();
+}
+
+// Simulated server URL (mock API)
+const serverUrl = "https://jsonplaceholder.typicode.com/posts";
+
+// Post a new quote to the server
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch(serverUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quote)
+    });
+
+    if (!response.ok) throw new Error("Failed to post quote to server");
+
+    const result = await response.json();
+    console.log("Quote posted successfully:", result);
+  } catch (err) {
+    console.error("Error posting quote:", err);
+  }
 }
 
 // Add a new quote
@@ -74,7 +96,8 @@ function addQuote() {
     return;
   }
 
-  quotes.push({ text, category });
+  const newQuote = { text, category };
+  quotes.push(newQuote);
   saveQuotes();
   populateCategories(); // Update categories dropdown
 
@@ -82,6 +105,9 @@ function addQuote() {
   document.getElementById("newQuoteCategory").value = "";
 
   filterQuotes();
+
+  // Post the new quote to the server
+  postQuoteToServer(newQuote);
 }
 
 // Export quotes as JSON file
@@ -113,32 +139,17 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// Initialize
-populateCategories();
-
-// Event listeners
-newQuoteButton.addEventListener("click", showRandomQuote);
-addQuoteButton.addEventListener("click", addQuote);
-exportButton.addEventListener("click", exportToJsonFile);
-importFileInput.addEventListener("change", importFromJsonFile);
-categoryFilter.addEventListener("change", filterQuotes);
-
-// Simulated server URL (mock API)
-const serverUrl = "https://jsonplaceholder.typicode.com/posts";
-
 // Function to fetch data from server
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(serverUrl);
     const data = await response.json();
 
-    // Map server data to quote format: text & category
     const serverQuotes = data.slice(0, 10).map(item => ({
       text: item.title,
       category: "Server"
     }));
 
-    // Conflict resolution: server takes precedence
     let updated = false;
     serverQuotes.forEach(sq => {
       if (!quotes.some(q => q.text === sq.text && q.category === sq.category)) {
@@ -152,11 +163,20 @@ async function fetchQuotesFromServer() {
       populateCategories();
       alert("Quotes have been synced with the server!");
     }
-
   } catch (err) {
     console.error("Error fetching server quotes:", err);
   }
 }
+
+// Initialize
+populateCategories();
+
+// Event listeners
+newQuoteButton.addEventListener("click", showRandomQuote);
+addQuoteButton.addEventListener("click", addQuote);
+exportButton.addEventListener("click", exportToJsonFile);
+importFileInput.addEventListener("change", importFromJsonFile);
+categoryFilter.addEventListener("change", filterQuotes);
 
 // Periodically sync with server every 60 seconds
 setInterval(fetchQuotesFromServer, 60000);
