@@ -12,32 +12,41 @@ const newQuoteButton = document.getElementById("newQuote");
 const addQuoteButton = document.getElementById("addQuoteBtn");
 
 // Function to display a random quote
-function displayRandomQuote() {
+function showRandomQuote() {
+  if (quotes.length === 0) {
+    quoteDisplay.innerHTML = "No quotes available. Add some!";
+    return;
+  }
+
+  // Select a random quote
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
+
+  // Update the DOM
   quoteDisplay.innerHTML = `"${quote.text}" — <strong>${quote.category}</strong>`;
 }
 
 // Function to add a new quote
 function addQuote() {
-  const text = document.getElementById("newQuoteText").value.trim();
-  const category = document.getElementById("newQuoteCategory").value.trim();
+  const textInput = document.getElementById("newQuoteText").value.trim();
+  const categoryInput = document.getElementById("newQuoteCategory").value.trim();
 
-  if (!text || !category) {
+  if (!textInput || !categoryInput) {
     alert("Both quote text and category are required.");
     return;
   }
 
-  quotes.push({ text, category });
+  // Add new quote to the array
+  quotes.push({ text: textInput, category: categoryInput });
 
   // Clear input fields
   document.getElementById("newQuoteText").value = "";
   document.getElementById("newQuoteCategory").value = "";
 
-  // Display the newly added quote
-  displayRandomQuote();
+  // Update the DOM with the new quote
+  showRandomQuote();
 }
 
 // Event listeners
-newQuoteButton.addEventListener("click", displayRandomQuote);
+newQuoteButton.addEventListener("click", showRandomQuote);
 addQuoteButton.addEventListener("click", addQuote);
