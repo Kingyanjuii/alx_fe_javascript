@@ -1,15 +1,15 @@
-// Array of quote objects
-let quotes = [
+// Quotes array with text and category properties
+const quotes = [
   { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
   { text: "Don't let yesterday take up too much of today.", category: "Inspiration" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
   { text: "You learn more from failure than from success.", category: "Learning" }
 ];
 
-// DOM elements
+// Get DOM elements
 const quoteDisplay = document.getElementById('quoteDisplay');
-const newQuoteBtn = document.getElementById('newQuote');
-const addQuoteBtn = document.getElementById('addQuoteBtn');
+const newQuoteButton = document.getElementById('newQuote');
+const addQuoteButton = document.getElementById('addQuoteBtn');
 
 // Function to display a random quote
 function displayRandomQuote() {
@@ -17,8 +17,12 @@ function displayRandomQuote() {
     quoteDisplay.innerHTML = "No quotes available. Add some!";
     return;
   }
+
+  // Select a random quote
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
+
+  // Update the DOM
   quoteDisplay.innerHTML = `"${quote.text}" — <strong>${quote.category}</strong>`;
 }
 
@@ -34,17 +38,17 @@ function addQuote() {
     return;
   }
 
-  // Add new quote to the array
-  quotes.push({ text, category });
+  // Add the new quote to the array
+  quotes.push({ text: text, category: category });
 
   // Clear input fields
   textInput.value = "";
   categoryInput.value = "";
 
-  // Show the newly added quote
+  // Update the DOM to show the new quote
   displayRandomQuote();
 }
 
-// Event listeners
-newQuoteBtn.addEventListener('click', displayRandomQuote);
-addQuoteBtn.addEventListener('click', addQuote);
+// Attach event listeners
+newQuoteButton.addEventListener('click', displayRandomQuote);
+addQuoteButton.addEventListener('click', addQuote);
