@@ -122,3 +122,47 @@ addQuoteButton.addEventListener("click", addQuote);
 exportButton.addEventListener("click", exportToJsonFile);
 importFileInput.addEventListener("change", importFromJsonFile);
 categoryFilter.addEventListener("change", filterQuotes);
+
+// Simulated server URL (mock API)
+const serverUrl = "https://jsonplaceholder.typicode.com/posts";
+
+// Function to fetch data from server
+async function fetchServerQuotes() {
+  try {
+    const response = await fetch(serverUrl);
+    const data = await response.json();
+
+    // Map server data to quote format: text & category
+    const serverQuotes = data.slice(0, 10).map(item => ({
+      text: item.title,
+      category: "Server"
+    }));
+
+    // Conflict resolution: server takes precedence
+    let updated = false;
+    serverQuotes.forEach(sq => {
+      if (!quotes.some(q => q.text === sq.text && q.category === sq.category)) {
+        quotes.push(sq);
+        updated = true;
+      }
+    });
+
+    if (updated) {
+      saveQuotes();
+      populateCategories();
+      alert("Quotes have been synced with the server!");
+    }
+
+  } catch (err) {
+    console.error("Error fetching server quotes:", err);
+  }
+}
+
+// Periodically sync with server every 60 seconds
+setInterval(fetchServerQuotes, 60000);
+
+// Optional: manual sync button
+const syncButton = document.createElement("button");
+syncButton.textContent = "Sync with Server";
+document.body.appendChild(syncButton);
+syncButton.addEventListener("click", fetchServerQuotes);
