@@ -1,4 +1,4 @@
-// Array of quotes
+// Array of quote objects
 let quotes = [
   { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
   { text: "Don't let yesterday take up too much of today.", category: "Inspiration" },
@@ -6,7 +6,7 @@ let quotes = [
   { text: "You learn more from failure than from success.", category: "Learning" }
 ];
 
-// DOM element
+// DOM elements
 const quoteDisplay = document.getElementById('quoteDisplay');
 const newQuoteBtn = document.getElementById('newQuote');
 const addQuoteBtn = document.getElementById('addQuoteBtn');
@@ -34,11 +34,14 @@ function addQuote() {
     return;
   }
 
+  // Add new quote to the array
   quotes.push({ text, category });
 
+  // Clear input fields
   textInput.value = "";
   categoryInput.value = "";
 
+  // Show the newly added quote
   displayRandomQuote();
 }
 
