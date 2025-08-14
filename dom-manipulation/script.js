@@ -127,7 +127,7 @@ categoryFilter.addEventListener("change", filterQuotes);
 const serverUrl = "https://jsonplaceholder.typicode.com/posts";
 
 // Function to fetch data from server
-async function fetchServerQuotes() {
+async function fetchQuotesFromServer() {
   try {
     const response = await fetch(serverUrl);
     const data = await response.json();
@@ -159,10 +159,10 @@ async function fetchServerQuotes() {
 }
 
 // Periodically sync with server every 60 seconds
-setInterval(fetchServerQuotes, 60000);
+setInterval(fetchQuotesFromServer, 60000);
 
 // Optional: manual sync button
 const syncButton = document.createElement("button");
 syncButton.textContent = "Sync with Server";
 document.body.appendChild(syncButton);
-syncButton.addEventListener("click", fetchServerQuotes);
+syncButton.addEventListener("click", fetchQuotesFromServer);
