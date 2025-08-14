@@ -168,6 +168,28 @@ async function fetchQuotesFromServer() {
   }
 }
 
+// Function to sync all quotes to the server using POST
+async function syncQuotes() {
+  try {
+    const response = await fetch(serverUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quotes)
+    });
+
+    if (!response.ok) throw new Error(`Server responded with status ${response.status}`);
+
+    const result = await response.json();
+    console.log("All quotes successfully synced to server:", result);
+    alert("All quotes synced to the server successfully!");
+  } catch (err) {
+    console.error("Error syncing quotes to server:", err);
+    alert("Failed to sync quotes to server.");
+  }
+}
+
 // Initialize
 populateCategories();
 
@@ -186,3 +208,9 @@ const syncButton = document.createElement("button");
 syncButton.textContent = "Sync with Server";
 document.body.appendChild(syncButton);
 syncButton.addEventListener("click", fetchQuotesFromServer);
+
+// Optional: manual sync button for all quotes
+const manualSyncBtn2 = document.createElement("button");
+manualSyncBtn2.textContent = "Sync All Quotes to Server";
+document.body.appendChild(manualSyncBtn2);
+manualSyncBtn2.addEventListener("click", syncQuotes);
