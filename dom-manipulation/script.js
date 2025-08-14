@@ -71,14 +71,11 @@ async function postQuoteToServer(quote) {
   try {
     const response = await fetch(serverUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(quote)
     });
 
     if (!response.ok) throw new Error("Failed to post quote to server");
-
     const result = await response.json();
     console.log("Quote posted successfully:", result);
   } catch (err) {
@@ -139,7 +136,7 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// Function to fetch data from server
+// Fetch quotes from server
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(serverUrl);
@@ -168,25 +165,19 @@ async function fetchQuotesFromServer() {
   }
 }
 
-// Function to sync all quotes to the server using POST
+// Sync all local quotes to server with notification
 async function syncQuotes() {
   try {
-    const response = await fetch(serverUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(quotes)
-    });
-
-    if (!response.ok) throw new Error(`Server responded with status ${response.status}`);
-
-    const result = await response.json();
-    console.log("All quotes successfully synced to server:", result);
-    alert("All quotes synced to the server successfully!");
+    for (const quote of quotes) {
+      await fetch(serverUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quote)
+      });
+    }
+    alert("Quotes synced with server!"); // UI notification
   } catch (err) {
-    console.error("Error syncing quotes to server:", err);
-    alert("Failed to sync quotes to server.");
+    console.error("Error syncing quotes:", err);
   }
 }
 
@@ -200,17 +191,11 @@ exportButton.addEventListener("click", exportToJsonFile);
 importFileInput.addEventListener("change", importFromJsonFile);
 categoryFilter.addEventListener("change", filterQuotes);
 
-// Periodically sync with server every 60 seconds
+// Periodically fetch quotes from server every 60 seconds
 setInterval(fetchQuotesFromServer, 60000);
 
-// Optional: manual sync button
+// Optional: manual sync button using syncQuotes
 const syncButton = document.createElement("button");
 syncButton.textContent = "Sync with Server";
 document.body.appendChild(syncButton);
-syncButton.addEventListener("click", fetchQuotesFromServer);
-
-// Optional: manual sync button for all quotes
-const manualSyncBtn2 = document.createElement("button");
-manualSyncBtn2.textContent = "Sync All Quotes to Server";
-document.body.appendChild(manualSyncBtn2);
-manualSyncBtn2.addEventListener("click", syncQuotes);
+syncButton.addEventListener("click", syncQuotes);
