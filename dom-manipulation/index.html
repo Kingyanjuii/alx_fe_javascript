@@ -19,7 +19,7 @@
       font-size: 1.2rem;
       border-radius: 5px;
     }
-    input {
+    input, select {
       padding: 5px;
       margin: 5px 0;
     }
@@ -32,6 +32,12 @@
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
+
+  <h2>Filter Quotes by Category</h2>
+  <select id="categoryFilter">
+    <option value="all">All Categories</option>
+    <!-- Categories will be dynamically populated -->
+  </select>
 
   <div id="quoteDisplay">Click "Show New Quote" to display a quote.</div>
   <button id="newQuote">Show New Quote</button>
