@@ -1,39 +1,29 @@
-// Quotes array with objects containing text and category
 let quotes = [
-    { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
-    { text: "Don't let yesterday take up too much of today.", category: "Inspiration" },
-    { text: "It's not whether you get knocked down, it's whether you get up.", category: "Resilience" }
+    "The best way to get started is to quit talking and begin doing.",
+    "Don't let yesterday take up too much of today.",
+    "It's not whether you get knocked down, it's whether you get up."
 ];
 
-// Function to display a random quote
-function displayRandomQuote() {
-    let randomIndex = Math.floor(Math.random() * quotes.length);
-    let selectedQuote = quotes[randomIndex];
-
-    document.getElementById("quoteDisplay").innerHTML = `"${selectedQuote.text}"`;
-    document.getElementById("quoteCategory").innerHTML = `Category: ${selectedQuote.category}`;
+// Function to select a random quote and update the DOM
+function showRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    quoteDisplay.textContent = quotes[randomIndex];
 }
 
-// Function to add a new quote
+// Function to add a new quote to the quotes array and update the DOM
 function addQuote() {
-    let newQuoteText = document.getElementById("quoteText").value.trim();
-    let newQuoteCategory = document.getElementById("quoteCategoryInput").value.trim();
-
-    if (newQuoteText !== "" && newQuoteCategory !== "") {
-        quotes.push({ text: newQuoteText, category: newQuoteCategory });
-        document.getElementById("quoteText").value = "";
-        document.getElementById("quoteCategoryInput").value = "";
-        displayRandomQuote();
-    } else {
-        alert("Please enter both a quote and a category.");
+    const newQuoteInput = document.getElementById("newQuote");
+    const newQuote = newQuoteInput.value.trim();
+    if (newQuote) {
+        quotes.push(newQuote);
+        newQuoteInput.value = "";
+        showRandomQuote(); // show the newly added quote
     }
 }
 
-// Event listener for the "Show New Quote" button
-document.getElementById("newQuoteBtn").addEventListener("click", displayRandomQuote);
+// Event listener for the “Show New Quote” button
+document.getElementById("newQuoteBtn").addEventListener("click", showRandomQuote);
 
-// Event listener for the "Add Quote" button
-document.getElementById("addQuoteBtn").addEventListener("click", addQuote);
-
-// Display an initial random quote when page loads
-window.onload = displayRandomQuote;
+// Optional: display one random quote on page load
+document.addEventListener("DOMContentLoaded", showRandomQuote);
