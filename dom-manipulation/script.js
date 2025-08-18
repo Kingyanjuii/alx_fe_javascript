@@ -181,6 +181,22 @@ async function syncQuotes() {
   }
 }
 
+// ✅ Create Add Quote Form dynamically
+function createAddQuoteForm() {
+  const form = document.createElement("div");
+
+  form.innerHTML = `
+    <input type="text" id="newQuoteText" placeholder="Enter quote" />
+    <input type="text" id="newQuoteCategory" placeholder="Enter category" />
+    <button id="addQuoteBtn">Add Quote</button>
+  `;
+
+  document.body.appendChild(form);
+
+  // Reattach event listener to new button
+  document.getElementById("addQuoteBtn").addEventListener("click", addQuote);
+}
+
 // Initialize
 populateCategories();
 
@@ -199,3 +215,6 @@ const syncButton = document.createElement("button");
 syncButton.textContent = "Sync with Server";
 document.body.appendChild(syncButton);
 syncButton.addEventListener("click", syncQuotes);
+
+// Call createAddQuoteForm if needed
+// createAddQuoteForm();
